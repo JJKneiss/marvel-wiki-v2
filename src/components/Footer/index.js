@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 const Footer = (props, children) => {
-    console.log(props);
     return (
         <footer>
             <ul className="links">

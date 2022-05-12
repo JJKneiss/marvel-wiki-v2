@@ -1,5 +1,6 @@
 import './App.css';
-import Views from './Views'
+import Views from './Views';
+
 function App() {
   return (
     <Views />

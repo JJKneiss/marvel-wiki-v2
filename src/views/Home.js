@@ -32,7 +32,7 @@ export default function Home() {
                                 urls: element.urls,
                                 comics: element.comics,
                                 siteLink: element.siteLink,
-                                thumbnailImage: element.thumbnailImage
+                                thumbnail: element.thumbnail.path + "." + element.thumbnail.extension
                             })
                         }
                     );
@@ -52,19 +52,28 @@ export default function Home() {
     if (characters !== undefined && characters.length > 0) {
         charactersList = characters.map((element, index) => {
             return (
-                <article className="card" key={element.id} val={element}>
-                    <h1>{element.name}</h1>
-                    <p>{element.description}</p>
-                    <button>Read More</button>
-                </article>);
+                <article class="card">
+                    <div class="card-container">
+                        <div class="card-front">
+                            <h2>{element.name}</h2>
+                            <img src={element.thumbnail} alt={element.name} />
+                        </div>
+                        <div class="card-back">
+                            <p>{element.description}</p>
+                            <button>Read More</button>
+                        </div>
+                    </div>
+                </article>
+            );
         });
     }
     return (
         <div className="App">
             <Header />
-            <section className="cards">
+            <section className="characters">
                 {charactersList || <p>"Loading"</p>}
             </section>
+            <button>Previous</button> <button>Next</button>
             <Footer attribution={attribution} />
         </div >
     );
