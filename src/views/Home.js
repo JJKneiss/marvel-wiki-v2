@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
+import CardList from '../components/CardList';
+import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 
 export default function Home() {
-    const [characters, setCharacters] = useState();
+
+    const [characters, setCharacters] = useState([]);
     const [attribution, setAttribution] = useState();
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [charactersPerPage] = useState(8);
     useEffect(() => {
         console.clear();
-        let loadAPI = async () => {
+        const loadAPI = async () => {
             try {
+                setLoading(true);
+
                 const endPoint = "https://gateway.marvel.com/v1/public/characters?&apikey=";
                 let auth = "9fc3988f672586da032a847df46e7861";
 
                 const response = await fetch(endPoint + auth);
                 const data = await response.json();
                 let results = data.data.results;
-                console.log(results);
 
-                let arr;
+                let arr = [];
                 if (data.length === 0) {
                     alert("No results.");
                 }
@@ -28,7 +35,7 @@ export default function Home() {
                             arr.push({
                                 id: element.id,
                                 name: element.name,
-                                description: element.description,
+                                description: checkDescription(element.description),
                                 urls: element.urls,
                                 comics: element.comics,
                                 siteLink: element.siteLink,
@@ -39,7 +46,7 @@ export default function Home() {
                     setCharacters(arr);
                     setAttribution(data.attributionHTML);
                 }
-                console.table(arr);
+                setLoading(false);
             }
             catch (err) {
                 console.log(err);
@@ -47,33 +54,23 @@ export default function Home() {
         }
         loadAPI();
     }, []);
-
-    let charactersList;
-    if (characters !== undefined && characters.length > 0) {
-        charactersList = characters.map((element, index) => {
-            return (
-                <article class="card">
-                    <div class="card-container">
-                        <div class="card-front">
-                            <h2>{element.name}</h2>
-                            <img src={element.thumbnail} alt={element.name} />
-                        </div>
-                        <div class="card-back">
-                            <p>{element.description}</p>
-                            <button>Read More</button>
-                        </div>
-                    </div>
-                </article>
-            );
-        });
+    let checkDescription = (description) => {
+        if (description === "" || description === undefined) description = "No Description Available";
+        return description;
     }
+    // Get current posts
+    const indexOfLastCharacter = currentPage * charactersPerPage;
+    const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
+    const currentCharacters = characters.slice(indexOfFirstCharacter, indexOfLastCharacter);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div className="App">
             <Header />
-            <section className="characters">
-                {charactersList || <p>"Loading"</p>}
-            </section>
-            <button>Previous</button> <button>Next</button>
+            <CardList characters={currentCharacters} loading={loading} />
+            <Pagination charactersPerPage={charactersPerPage} totalCharacters={characters.length} paginate={paginate} />
             <Footer attribution={attribution} />
         </div >
     );

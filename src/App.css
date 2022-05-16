@@ -15,11 +15,11 @@ nav a.active{
 
 section.characters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 60px;
   padding: 20px;
-  /* margin: 50px 0; */
-  background-color: whitesmoke;
+  margin: 50px;
+  /* background-color: whitesmoke; */
 }
 /* TAKE OBJECT FAR FROM PERSPECTIVE VIEW */
 .card, .card-front, .card-back{
@@ -47,10 +47,17 @@ section.characters {
 .card-back {
   transform: rotateY(180deg);
   background-color: #262c34;
+  /* margin: 0 auto; */
   border:1px solid #333;
   color: whitesmoke;
 }
-
+.card-back button{
+  position: absolute;
+  text-align: center;
+  /* width: fit-content; */
+  margin: 20px;
+  bottom: 0;
+}
 /* FIX CARD IMAGES WIDTH */
 .card-container img {
     width: 400px;
@@ -86,4 +93,17 @@ body{
 }
 h2{
   font-weight: bold;
+}
+.page-item{
+  display: inline;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d31b34;
+}
+footer li{
+  display: inline;
+}
+footer *{
+  margin: 10px;
 }
